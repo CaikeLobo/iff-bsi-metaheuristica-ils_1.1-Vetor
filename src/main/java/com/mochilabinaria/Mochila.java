@@ -52,5 +52,6 @@ public class Mochila {
     		itens[cont] = item;
     		cont++;
     	}
+    	scanner.close();
     }
 }

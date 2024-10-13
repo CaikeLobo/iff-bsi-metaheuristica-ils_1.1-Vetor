@@ -19,35 +19,90 @@ public class MetodosILS {
     
 	// Função de avaliação da mochila
     private int verificarMochila(int[] solucao) {
-        int pesoTotal = 0;
         int valorTotal = 0;
         
         for (int i = 0; i < solucao.length; i++) {
             if (solucao[i] == 1) {
-                pesoTotal += this.mochila.getItens()[i].peso;
                 valorTotal += this.mochila.getItens()[i].valor;
             }
         }
-        return pesoTotal <= this.mochila.getCapacidade() ? valorTotal : 0;
+        return valorTotal;
+    }
+    
+    private int verificarPesoMochila(int[] solucao) {
+        int PesoTotal = 0;
+        
+        for (int i = 0; i < solucao.length; i++) {
+            if (solucao[i] == 1) {
+                PesoTotal += this.mochila.getItens()[i].peso;
+            }
+        }
+        return PesoTotal;
+    }
+    
+    private boolean verificarValidadeMochila(int[] solucao) {
+        int pesoTotal = 0;
+        
+        for (int i = 0; i < solucao.length; i++) 
+        {
+            if (solucao[i] == 1) {
+                pesoTotal += this.mochila.getItens()[i].peso;
+            }            
+        }
+        if (pesoTotal > this.mochila.getCapacidade()) {
+        	//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor);
+        	
+        	return false;
+        }
+        else {
+        	return true;
+        }
     }
 
     // Busca local: tenta melhorar a solução alterando um item de cada vez
     private int[] buscaLocal(int[] solucao) {
+    	ArquivoUtils.adicionarTextoAoArquivo("Busca Local INICIADA");
         int[] melhorSolucao = Arrays.copyOf(solucao, solucao.length);
-        int melhorValor = verificarMochila(melhorSolucao);
+        int melhorValor = 0;
+        if (verificarValidadeMochila(melhorSolucao) == true) {
+        	melhorValor = verificarMochila(melhorSolucao);             
+        }
+        
         
         for (int i = 0; i < criterioDeParadaDaBuscaLocal; i++) {
             int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
-            int indice = random.nextInt(novaSolucao.length);
-            novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0
+            for (int o = 0; o < random.nextInt(2) + 1; o++) {
+            	int indice = random.nextInt(novaSolucao.length);
+                novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0            	
+            }
+            
 
             int novoValor = verificarMochila(novaSolucao);
-            if (novoValor > melhorValor) {
-                melhorSolucao = novaSolucao;
-                melhorValor = novoValor;
+            
+			if (verificarValidadeMochila(novaSolucao) == true) {
+				
+            	//System.out.println("é valido?: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            	if (novoValor > melhorValor) { 
+            		ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		melhorSolucao = novaSolucao;
+                    melhorValor = novoValor;
+            	}
+            	
             }
+			if (verificarValidadeMochila(novaSolucao) == false) {
+        		if (this.verificarPesoMochila(melhorSolucao)> this.verificarPesoMochila(novaSolucao)) {
+        			ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
+        			//System.out.print("o"); 
+        			melhorSolucao = novaSolucao;
+                    melhorValor = novoValor;
+        		}            			
+        	}
         }
-        return melhorSolucao;
+        if (verificarValidadeMochila(melhorSolucao) == false) {
+        	ArquivoUtils.adicionarTextoAoArquivo("A MELHOR SOLUÇÃO AINDA ESTÁ ACIMA DO PESO MAXIMO" + this.verificarPesoMochila(melhorSolucao));
+        }
+        	return melhorSolucao;  	
     }
 
     // Perturbação: modifica a solução atual para escapar de ótimos locais
@@ -69,11 +124,13 @@ public class MetodosILS {
             int indice = random.nextInt(solucaoPerturbada.length);
             solucaoPerturbada[indice] = 1 - solucaoPerturbada[indice];
         }
-
+        //System.out.println(this.verificarPesoMochila(solucaoPerturbada));
+        
         return solucaoPerturbada;
     }
 
     // ILS: combina a busca local e a perturbação
+ // ILS: combina a busca local e a perturbação
     public int[] encontrarSolucao() {
     	/*
     	 * Array com base na lista de itens que podem entrar na mochila
@@ -97,8 +154,16 @@ public class MetodosILS {
             }
 
             // Criterio de aceitação
+           
             if (verificarMochila(novaSolucao) > verificarMochila(melhorSolucao)) {
-                melhorSolucao = novaSolucao;
+            	//System.out.println("Tentativa de Inserção de Melhor Solução no EC");
+            	 if(this.verificarValidadeMochila(novaSolucao) == true) {
+            		 System.out.println("UMA NOVA SOLUÇÃO OTIMA FOI ENCONTRADA: " + this.verificarMochila(novaSolucao));
+            		 System.out.println("VALOR: " + this.verificarMochila(novaSolucao));
+            		 System.out.println("PESO: " + this.verificarPesoMochila(novaSolucao));
+            		 melhorSolucao = novaSolucao;
+                 }
+                
             }
         }
 
@@ -118,11 +183,13 @@ public class MetodosILS {
                 valorTotal += item.valor;
             }
         }
+        
         System.out.println();
         System.out.println("Peso: " + pesoTotal);
         System.out.println("Valor: " + valorTotal);
         System.out.println("Criterio de parada da pertubação: " + criterioDeParadaDoILS);
         System.out.println("Criterio de parada da busca local: " + criterioDeParadaDaBuscaLocal);
         System.out.println("Tamanho da pertubação: " + tamanhoPertubação);
+        System.out.println("Numero de Items: " + solucao.length);
     }
 }
