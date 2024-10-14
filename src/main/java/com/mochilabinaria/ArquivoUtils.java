@@ -27,5 +27,5 @@ public class ArquivoUtils {
 	        } catch (IOException e) {
 	            e.printStackTrace(); // Lida com possíveis exceções de I/O
 	        }
-	    }
+	    } // C:\\Users\\caike\\Downloads\\input1-1.txt
 }

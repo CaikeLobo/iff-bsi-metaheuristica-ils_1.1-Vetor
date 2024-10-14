@@ -17,6 +17,22 @@ public class MetodosILS {
     	this.tamanhoPertubação = tamanhoPertubação;
     }
     
+    private int verificarNumeroDeItens(int[] solucao) {
+        int Total = 0;
+        
+        for (int i = 0; i < solucao.length; i++) {
+            if (solucao[i] == 1) {
+                Total ++;
+            }
+        }
+        return Total;
+    }
+    
+    
+    
+    
+    
+    
 	// Função de avaliação da mochila
     private int verificarMochila(int[] solucao) {
         int valorTotal = 0;
@@ -61,15 +77,19 @@ public class MetodosILS {
 
     // Busca local: tenta melhorar a solução alterando um item de cada vez
     private int[] buscaLocal(int[] solucao) {
+    	//System.out.println("BUSCA LOCAL INICIADA");
     	ArquivoUtils.adicionarTextoAoArquivo("Busca Local INICIADA");
         int[] melhorSolucao = Arrays.copyOf(solucao, solucao.length);
         int melhorValor = 0;
+        int numeroDeErros = 0;
+        boolean ocorreuErro = true;
         if (verificarValidadeMochila(melhorSolucao) == true) {
         	melhorValor = verificarMochila(melhorSolucao);             
         }
         
         
-        for (int i = 0; i < criterioDeParadaDaBuscaLocal; i++) {
+        while (numeroDeErros <= criterioDeParadaDaBuscaLocal) {
+        	ocorreuErro = true;
             int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
             for (int o = 0; o < random.nextInt(2) + 1; o++) {
             	int indice = random.nextInt(novaSolucao.length);
@@ -87,6 +107,9 @@ public class MetodosILS {
             		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
+                    ocorreuErro = false;
+                    //System.out.println("1");
+                    numeroDeErros = 0;
             	}
             	
             }
@@ -96,8 +119,17 @@ public class MetodosILS {
         			//System.out.print("o"); 
         			melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
+                    ocorreuErro = false;
+                    //System.out.println("2");
+                    numeroDeErros = 0;
         		}            			
         	}
+			
+			if (ocorreuErro == true) {
+				numeroDeErros++;				
+			}
+			//System.out.println(numeroDeErros + " " + melhorValor);
+			
         }
         if (verificarValidadeMochila(melhorSolucao) == false) {
         	ArquivoUtils.adicionarTextoAoArquivo("A MELHOR SOLUÇÃO AINDA ESTÁ ACIMA DO PESO MAXIMO" + this.verificarPesoMochila(melhorSolucao));
@@ -107,6 +139,7 @@ public class MetodosILS {
 
     // Perturbação: modifica a solução atual para escapar de ótimos locais
     private int[] perturbacao(int[] solucao) {
+    	ArquivoUtils.adicionarTextoAoArquivo("PERTUBAÇAO OCORREU");
         int[] solucaoPerturbada = Arrays.copyOf(solucao, solucao.length);
         /*
          * Define quantos elementos da solução serão 
@@ -114,15 +147,23 @@ public class MetodosILS {
          * Neste caso de pelo menos um até a metade de 
          * elementos da solução
          */
-//        int tamanhoPerturbacao = random.nextInt(tamanhoMaximoPertubação) + 1;
-
-        for (int i = 0; i < this.tamanhoPertubação; i++) {
+        int tamanhoPerturbacao = random.nextInt(tamanhoPertubação) + 1;
+        
+        //System.out.println("PERTUBAÇÃO ATUAL: " + tamanhoPerturbacao);
+        int i = 0;
+        while (i < tamanhoPerturbacao) {
         	/*
         	 * Inverte todos os elementos na faixa do tamanho da
         	 * pertubação
         	 */
-            int indice = random.nextInt(solucaoPerturbada.length);
-            solucaoPerturbada[indice] = 1 - solucaoPerturbada[indice];
+        	int indice = random.nextInt(solucaoPerturbada.length);
+        	if (solucaoPerturbada[indice] == 1) {
+        		solucaoPerturbada[indice] = 0;
+        		i++;
+        	}
+            
+            
+            //solucaoPerturbada[indice] = 1 - solucaoPerturbada[indice];
         }
         //System.out.println(this.verificarPesoMochila(solucaoPerturbada));
         
@@ -150,6 +191,7 @@ public class MetodosILS {
             int[] novaSolucao = buscaLocal(solucaoPerturbada);
             
             if((i*100/criterioDeParadaDoILS) != (i - 1)*100/criterioDeParadaDoILS) {
+            	ArquivoUtils.adicionarTextoAoArquivo("PROGRESSO: " + (i*100/criterioDeParadaDoILS) + "%");
           	  System.out.println("Progresso: " + (i*100/criterioDeParadaDoILS) + "%");
             }
 
@@ -158,12 +200,16 @@ public class MetodosILS {
             if (verificarMochila(novaSolucao) > verificarMochila(melhorSolucao)) {
             	//System.out.println("Tentativa de Inserção de Melhor Solução no EC");
             	 if(this.verificarValidadeMochila(novaSolucao) == true) {
+            		 ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUÇÃO FOI ENCONTRADA!" + this.verificarMochila(novaSolucao));
             		 System.out.println("UMA NOVA SOLUÇÃO OTIMA FOI ENCONTRADA: " + this.verificarMochila(novaSolucao));
             		 System.out.println("VALOR: " + this.verificarMochila(novaSolucao));
             		 System.out.println("PESO: " + this.verificarPesoMochila(novaSolucao));
             		 melhorSolucao = novaSolucao;
                  }
                 
+            }
+            else {
+            	ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUCAO NAO FOI ENCONTRADA" + this.verificarMochila(melhorSolucao));
             }
         }
 
@@ -185,6 +231,7 @@ public class MetodosILS {
         }
         
         System.out.println();
+        System.out.println("Numero de Itens: " + this.verificarNumeroDeItens(solucao));
         System.out.println("Peso: " + pesoTotal);
         System.out.println("Valor: " + valorTotal);
         System.out.println("Criterio de parada da pertubação: " + criterioDeParadaDoILS);
