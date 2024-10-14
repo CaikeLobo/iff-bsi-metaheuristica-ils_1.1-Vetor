@@ -74,6 +74,27 @@ public class MetodosILS {
         	return true;
         }
     }
+    
+    private int[] encherVetor (int[] Solucao) {
+    	
+    	int[] AtualSolucao = Arrays.copyOf(Solucao, Solucao.length);
+    	
+    	for (int o = 0; o < 1000 + 1; o++) {
+    		AtualSolucao = buscaLocal(AtualSolucao);  
+    		if((o*100/1000) != (o - 1)*100/1000) {
+            	ArquivoUtils.adicionarTextoAoArquivo("PROGRESSO EV: " + (o*100/1000) + "%");
+          	  System.out.println("Enchendo Vetor, Progresso: " + (o*100/1000) + "%");
+            }
+        }
+    	
+    	ArquivoUtils.adicionarTextoAoArquivo("ENCHER VETOR FOI ENCERRADO, INICIANDO METODO ILS");
+		return AtualSolucao;
+		
+		
+    	
+    	
+    	
+    }
 
     // Busca local: tenta melhorar a solução alterando um item de cada vez
     private int[] buscaLocal(int[] solucao) {
@@ -179,7 +200,7 @@ public class MetodosILS {
     	 * 1 significa que o item esta na mochila
     	 */
         int[] solucaoAtual = new int[this.mochila.getItens().length];
-        int[] melhorSolucao = buscaLocal(solucaoAtual);
+        int[] melhorSolucao = encherVetor(solucaoAtual);
 
         /*
          * Repete a pertubação e busca local ate atender

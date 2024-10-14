@@ -11,7 +11,7 @@ public class Main {
     	ArquivoUtils.apagarArquivo();
       
     	// Parâmetros do ILS
-    	int criterioDeParadaDoILS = 2000;
+    	int criterioDeParadaDoILS = 1000;
     	int criterioDeParadaDaBuscaLocal = 1000;
     	int tamanhoInicialPertubação = 100; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
 
