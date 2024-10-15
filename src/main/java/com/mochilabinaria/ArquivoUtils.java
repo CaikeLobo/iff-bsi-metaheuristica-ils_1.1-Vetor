@@ -7,7 +7,7 @@ public class ArquivoUtils {
     
 	 public static void adicionarTextoAoArquivo(String texto) {
 	        // Especifica o caminho do arquivo
-	        String caminhoArquivo = "C:\\Users\\caike\\Downloads\\iff-bsi-mochila-binaria-master\\src\\Output.txt";
+	        String caminhoArquivo = "C:\\Users\\caike\\Downloads\\Output.txt";
 	        
 	        // Tenta abrir o arquivo no modo de anexar (append)
 	        try (FileWriter escritor = new FileWriter(caminhoArquivo, true)) {
@@ -19,7 +19,7 @@ public class ArquivoUtils {
 	 // Método para apagar todo o conteúdo do arquivo
 	    public static void apagarArquivo() {
 	        // Especifica o caminho do arquivo
-	        String caminhoArquivo = "C:\\Users\\caike\\Downloads\\iff-bsi-mochila-binaria-master\\src\\Output.txt";
+	        String caminhoArquivo = "C:\\Users\\caike\\Downloads\\Output.txt";
 	        
 	        // Tenta abrir o arquivo no modo de sobrescrever (append = false)
 	        try (FileWriter escritor = new FileWriter(caminhoArquivo, false)) {

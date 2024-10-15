@@ -87,7 +87,7 @@ public class MetodosILS {
         }
         
         
-        while (numeroDeErros <= criterioDeParadaDaBuscaLocal*5) {
+        while (numeroDeErros <= criterioDeParadaDaBuscaLocal) {
         	NumeroDeVezesEV++;
         	ocorreuErro = true;
             int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
@@ -119,7 +119,7 @@ public class MetodosILS {
             }
 			if (verificarValidadeMochila(novaSolucao) == false) {
         		if (this.verificarPesoMochila(melhorSolucao)> this.verificarPesoMochila(novaSolucao)) {
-        			ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
+        			ArquivoUtils.adicionarTextoAoArquivo("BUSCA LOCAL está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
         			//System.out.print("o"); 
         			melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
@@ -202,13 +202,7 @@ public class MetodosILS {
             			Achou2 = true;
             		}                            		
             	}
-                break;
-            case 3:
-            	
-                break;
-            case 4:
-                
-                break;
+                break;            
             default:
                 System.out.println("Opção inválida!");
                   }
@@ -226,7 +220,7 @@ public class MetodosILS {
 				
             	//System.out.println("é valido?: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             	if (novoValor > melhorValor) { 
-            		ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria De Numero: " + NumeroDeVezes +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		ArquivoUtils.adicionarTextoAoArquivo("BUSCA LOCAL De Numero: " + NumeroDeVezes +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
@@ -238,7 +232,7 @@ public class MetodosILS {
             }
 			if (verificarValidadeMochila(novaSolucao) == false) {
         		if (this.verificarPesoMochila(melhorSolucao)> this.verificarPesoMochila(novaSolucao)) {
-        			ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
+        			ArquivoUtils.adicionarTextoAoArquivo("BUSCA LOCAL está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
         			//System.out.print("o"); 
         			melhorSolucao = novaSolucao;
                     melhorValor = novoValor;

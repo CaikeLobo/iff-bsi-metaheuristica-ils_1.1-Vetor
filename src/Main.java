@@ -12,8 +12,8 @@ public class Main {
       
     	// Parâmetros do ILS
     	int criterioDeParadaDoILS = 1000;
-    	int criterioDeParadaDaBuscaLocal = 2000;
-    	int tamanhoInicialPertubação = 250; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
+    	int criterioDeParadaDaBuscaLocal = 5000;
+    	int tamanhoInicialPertubação = 150; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
 
     	// Iniciação da mochila com os itensMochila
     	Mochila mochila = new Mochila(arquivo);
