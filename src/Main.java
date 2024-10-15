@@ -7,13 +7,13 @@ import main.java.com.mochilabinaria.Mochila;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-    	File arquivo = new File(System.getProperty("user.dir")+"\\src\\input0.txt");
+    	File arquivo = new File(System.getProperty("user.dir")+"\\src\\input2.txt");
     	ArquivoUtils.apagarArquivo();
       
     	// Parâmetros do ILS
     	int criterioDeParadaDoILS = 1000;
-    	int criterioDeParadaDaBuscaLocal = 1000;
-    	int tamanhoInicialPertubação = 100; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
+    	int criterioDeParadaDaBuscaLocal = 2000;
+    	int tamanhoInicialPertubação = 250; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
 
     	// Iniciação da mochila com os itensMochila
     	Mochila mochila = new Mochila(arquivo);

@@ -75,43 +75,26 @@ public class MetodosILS {
         }
     }
     
-    private int[] encherVetor (int[] Solucao) {
+    private int[] encherVetor (int[] solucao) {
     	
-    	int[] AtualSolucao = Arrays.copyOf(Solucao, Solucao.length);
-    	
-    	for (int o = 0; o < 1000 + 1; o++) {
-    		AtualSolucao = buscaLocal(AtualSolucao);  
-    		if((o*100/1000) != (o - 1)*100/1000) {
-            	ArquivoUtils.adicionarTextoAoArquivo("PROGRESSO EV: " + (o*100/1000) + "%");
-          	  System.out.println("Enchendo Vetor, Progresso: " + (o*100/1000) + "%");
-            }
-        }
-    	
-    	ArquivoUtils.adicionarTextoAoArquivo("ENCHER VETOR FOI ENCERRADO, INICIANDO METODO ILS");
-		return AtualSolucao;
-		
-		
-    	
-    	
-    	
-    }
-
-    // Busca local: tenta melhorar a solução alterando um item de cada vez
-    private int[] buscaLocal(int[] solucao) {
-    	//System.out.println("BUSCA LOCAL INICIADA");
-    	ArquivoUtils.adicionarTextoAoArquivo("Busca Local INICIADA");
-        int[] melhorSolucao = Arrays.copyOf(solucao, solucao.length);
+    	int[] melhorSolucao = Arrays.copyOf(solucao, solucao.length);
         int melhorValor = 0;
         int numeroDeErros = 0;
         boolean ocorreuErro = true;
+        int NumeroDeVezesEV = 0;
         if (verificarValidadeMochila(melhorSolucao) == true) {
         	melhorValor = verificarMochila(melhorSolucao);             
         }
         
         
-        while (numeroDeErros <= criterioDeParadaDaBuscaLocal) {
+        while (numeroDeErros <= criterioDeParadaDaBuscaLocal*5) {
+        	NumeroDeVezesEV++;
         	ocorreuErro = true;
             int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
+            
+            
+                                  
+                              
             for (int o = 0; o < random.nextInt(2) + 1; o++) {
             	int indice = random.nextInt(novaSolucao.length);
                 novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0            	
@@ -124,7 +107,7 @@ public class MetodosILS {
 				
             	//System.out.println("é valido?: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             	if (novoValor > melhorValor) { 
-            		ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		ArquivoUtils.adicionarTextoAoArquivo("EV De Numero: " + NumeroDeVezesEV +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
@@ -155,12 +138,136 @@ public class MetodosILS {
         if (verificarValidadeMochila(melhorSolucao) == false) {
         	ArquivoUtils.adicionarTextoAoArquivo("A MELHOR SOLUÇÃO AINDA ESTÁ ACIMA DO PESO MAXIMO" + this.verificarPesoMochila(melhorSolucao));
         }
+        ArquivoUtils.adicionarTextoAoArquivo("INICIALIZAÇÃO DO VETOR FINALIZADA " + this.verificarPesoMochila(melhorSolucao));
         	return melhorSolucao;  	
     }
+    	
+    	
+    
+
+    // Busca local: tenta melhorar a solução alterando um item de cada vez
+    private int[] buscaLocal(int[] solucao) {
+    	//System.out.println("BUSCA LOCAL INICIADA");
+    	ArquivoUtils.adicionarTextoAoArquivo("Busca Local INICIADA");
+        int[] melhorSolucao = Arrays.copyOf(solucao, solucao.length);
+        int melhorValor = 0;
+        int numeroDeErros = 0;
+        int NumeroDeVezes = 0;
+        boolean ocorreuErro = true;
+        if (verificarValidadeMochila(melhorSolucao) == true) {
+        	melhorValor = verificarMochila(melhorSolucao);             
+        }
+        
+        
+        while (numeroDeErros <= criterioDeParadaDaBuscaLocal) {
+        	NumeroDeVezes++;
+        	ocorreuErro = true;
+            int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
+            
+            
+            int Decisao = random.nextInt(2) + 1;
+            
+			switch (Decisao) {
+            case 1: // Adicionar 1 Item
+            	//System.out.println("Case 1");
+                boolean Achou = false;
+            	while (Achou == false) {
+            		int indice = random.nextInt(novaSolucao.length);
+            		if (solucao[indice] == 0) {
+            			novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0 
+            			Achou = true;
+            		}                            		
+            	}
+            	
+                break;
+            case 2:
+            	//System.out.println("Case 2");
+            	boolean Achou2 = false;
+            	while (Achou2 == false) {
+            		//System.out.println("Case 2 1");
+            		int indice = random.nextInt(novaSolucao.length);
+            		if (solucao[indice] == 0) {
+            			novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0 
+            			Achou2 = true;
+            		}                            		
+            	}
+            	Achou2 = false;
+            	while (Achou2 == false) {
+            		//System.out.println("Case 2 2");
+            		int indice2 = random.nextInt(novaSolucao.length);
+            		//System.out.println("INDICE = " + solucao[indice2] );
+            		if (solucao[indice2] == 1) {
+            			//System.out.println("Case 2 3");
+            			novaSolucao[indice2] = 1 - novaSolucao[indice2]; // Alterna o valor de 0 para 1 ou de 1 para 0 
+            			Achou2 = true;
+            		}                            		
+            	}
+                break;
+            case 3:
+            	
+                break;
+            case 4:
+                
+                break;
+            default:
+                System.out.println("Opção inválida!");
+                  }
+      
+            
+            //for (int o = 0; o < random.nextInt(2) + 1; o++) {
+            //	int indice = random.nextInt(novaSolucao.length);
+            //    novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0            	
+            //}
+            
+
+            int novoValor = verificarMochila(novaSolucao);
+            
+			if (verificarValidadeMochila(novaSolucao) == true) {
+				
+            	//System.out.println("é valido?: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            	if (novoValor > melhorValor) { 
+            		ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria De Numero: " + NumeroDeVezes +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		melhorSolucao = novaSolucao;
+                    melhorValor = novoValor;
+                    ocorreuErro = false;
+                    //System.out.println("1");
+                    numeroDeErros = 0;
+            	}
+            	
+            }
+			if (verificarValidadeMochila(novaSolucao) == false) {
+        		if (this.verificarPesoMochila(melhorSolucao)> this.verificarPesoMochila(novaSolucao)) {
+        			ArquivoUtils.adicionarTextoAoArquivo("Busca Binaria está Chegando Perto: Peso Atual - " + this.verificarPesoMochila(novaSolucao));
+        			//System.out.print("o"); 
+        			melhorSolucao = novaSolucao;
+                    melhorValor = novoValor;
+                    ocorreuErro = false;
+                    //System.out.println("2");
+                    numeroDeErros = 0;
+        		}            			
+        	}
+			
+			if (ocorreuErro == true) {
+				numeroDeErros++;				
+			}
+			//System.out.println(numeroDeErros + " " + melhorValor);
+			
+        }
+        
+        
+        
+        if (verificarValidadeMochila(melhorSolucao) == false) {
+        	ArquivoUtils.adicionarTextoAoArquivo("A MELHOR SOLUÇÃO AINDA ESTÁ ACIMA DO PESO MAXIMO" + this.verificarPesoMochila(melhorSolucao));
+        }
+        	return melhorSolucao;  	
+    }
+    
+    
 
     // Perturbação: modifica a solução atual para escapar de ótimos locais
     private int[] perturbacao(int[] solucao) {
-    	ArquivoUtils.adicionarTextoAoArquivo("PERTUBAÇAO OCORREU");
+    	
         int[] solucaoPerturbada = Arrays.copyOf(solucao, solucao.length);
         /*
          * Define quantos elementos da solução serão 
@@ -169,7 +276,7 @@ public class MetodosILS {
          * elementos da solução
          */
         int tamanhoPerturbacao = random.nextInt(tamanhoPertubação) + 1;
-        
+        ArquivoUtils.adicionarTextoAoArquivo("PERTUBAÇAO OCORREU: TAMANHO- " + tamanhoPerturbacao);
         //System.out.println("PERTUBAÇÃO ATUAL: " + tamanhoPerturbacao);
         int i = 0;
         while (i < tamanhoPerturbacao) {
@@ -225,6 +332,7 @@ public class MetodosILS {
             		 System.out.println("UMA NOVA SOLUÇÃO OTIMA FOI ENCONTRADA: " + this.verificarMochila(novaSolucao));
             		 System.out.println("VALOR: " + this.verificarMochila(novaSolucao));
             		 System.out.println("PESO: " + this.verificarPesoMochila(novaSolucao));
+            		 
             		 melhorSolucao = novaSolucao;
                  }
                 
