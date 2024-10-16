@@ -8,17 +8,23 @@ import main.java.com.mochilabinaria.Mochila;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
     	File arquivo = new File(System.getProperty("user.dir")+"\\src\\input2.txt");
+    	//input0.txt 1000 itens
+    	//input1.txt 5000 itens
+    	//input2.txt 10000 itens
+    	
+    	//É NECESSARIO ALTERAR O DIRETORIO NO ARQUIVOUTILS TAMBEM, LÁ VOCE IRÁ COLOCAR UM LOCAL PARA O Output.txt
+    	
     	ArquivoUtils.apagarArquivo();
       
     	// Parâmetros do ILS
     	int criterioDeParadaDoILS = 1000;
-    	int criterioDeParadaDaBuscaLocal = 5000;
-    	int tamanhoInicialPertubação = 150; // NAO PODE SER MUITO GRANDE, ~10 DO TOTAL DE ITENS, JÁ SEI QUAL É O PROBLEMA, CONSERTO DPS
+    	int criterioDeParadaDaBuscaLocal = 1000;
+    	int tamanhoPertubação = 20; // 20 = 20% da Solução foi retirada
 
     	// Iniciação da mochila com os itensMochila
     	Mochila mochila = new Mochila(arquivo);
     	// Iniciação do ils com a mochila e o criterio de parada
-    	MetodosILS ils = new MetodosILS(mochila, criterioDeParadaDoILS, criterioDeParadaDaBuscaLocal, tamanhoInicialPertubação);
+    	MetodosILS ils = new MetodosILS(mochila, criterioDeParadaDoILS, criterioDeParadaDaBuscaLocal, tamanhoPertubação);
     	// Encontrar e exibir a solução
     	ils.exibirSolucao(ils.encontrarSolucao());
     }

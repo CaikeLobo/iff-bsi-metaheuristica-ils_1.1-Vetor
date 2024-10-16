@@ -6,11 +6,11 @@ public class MetodosILS {
 	private Mochila mochila;
 	private int criterioDeParadaDoILS;
 	private int criterioDeParadaDaBuscaLocal;
-	private int tamanhoPertubação;
+	private float tamanhoPertubação;
     private Random random = new Random();
     
     // Construtor da classe
-    public MetodosILS(Mochila mochila, int criterioDeParadaDoILS, int criterioDeParadaDaBuscaLocal, int tamanhoPertubação) {
+    public MetodosILS(Mochila mochila, int criterioDeParadaDoILS, int criterioDeParadaDaBuscaLocal, float tamanhoPertubação) {
     	this.mochila = mochila;
     	this.criterioDeParadaDoILS = criterioDeParadaDoILS;
     	this.criterioDeParadaDaBuscaLocal = criterioDeParadaDaBuscaLocal;
@@ -27,14 +27,10 @@ public class MetodosILS {
         }
         return Total;
     }
-    
-    
-    
-    
-    
+     
     
 	// Função de avaliação da mochila
-    private int verificarMochila(int[] solucao) {
+    private int verificarValorMochila(int[] solucao) {
         int valorTotal = 0;
         
         for (int i = 0; i < solucao.length; i++) {
@@ -83,7 +79,7 @@ public class MetodosILS {
         boolean ocorreuErro = true;
         int NumeroDeVezesEV = 0;
         if (verificarValidadeMochila(melhorSolucao) == true) {
-        	melhorValor = verificarMochila(melhorSolucao);             
+        	melhorValor = verificarValorMochila(melhorSolucao);             
         }
         
         
@@ -101,7 +97,7 @@ public class MetodosILS {
             }
             
 
-            int novoValor = verificarMochila(novaSolucao);
+            int novoValor = verificarValorMochila(novaSolucao);
             
 			if (verificarValidadeMochila(novaSolucao) == true) {
 				
@@ -155,7 +151,7 @@ public class MetodosILS {
         int NumeroDeVezes = 0;
         boolean ocorreuErro = true;
         if (verificarValidadeMochila(melhorSolucao) == true) {
-        	melhorValor = verificarMochila(melhorSolucao);             
+        	melhorValor = verificarValorMochila(melhorSolucao);             
         }
         
         
@@ -214,13 +210,13 @@ public class MetodosILS {
             //}
             
 
-            int novoValor = verificarMochila(novaSolucao);
+            int novoValor = verificarValorMochila(novaSolucao);
             
 			if (verificarValidadeMochila(novaSolucao) == true) {
 				
             	//System.out.println("é valido?: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             	if (novoValor > melhorValor) { 
-            		ArquivoUtils.adicionarTextoAoArquivo("BUSCA LOCAL De Numero: " + NumeroDeVezes +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
+            		ArquivoUtils.adicionarTextoAoArquivo("BUSCA LOCAL De Numero: " + NumeroDeVezes + " Case "+ Decisao +  " Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		//System.out.println("Busca Binaria Conseguiu!: " + novoValor + ">" + melhorValor + " "+ this.verificarPesoMochila(novaSolucao));
             		melhorSolucao = novaSolucao;
                     melhorValor = novoValor;
@@ -269,7 +265,7 @@ public class MetodosILS {
          * Neste caso de pelo menos um até a metade de 
          * elementos da solução
          */
-        int tamanhoPerturbacao = random.nextInt(tamanhoPertubação) + 1;
+        int tamanhoPerturbacao = random.nextInt((int) Math.round(this.verificarNumeroDeItens(solucaoPerturbada) * (tamanhoPertubação /100) )) + 1;
         ArquivoUtils.adicionarTextoAoArquivo("PERTUBAÇAO OCORREU: TAMANHO- " + tamanhoPerturbacao);
         //System.out.println("PERTUBAÇÃO ATUAL: " + tamanhoPerturbacao);
         int i = 0;
@@ -319,12 +315,12 @@ public class MetodosILS {
 
             // Criterio de aceitação
            
-            if (verificarMochila(novaSolucao) > verificarMochila(melhorSolucao)) {
+            if (verificarValorMochila(novaSolucao) > verificarValorMochila(melhorSolucao)) {
             	//System.out.println("Tentativa de Inserção de Melhor Solução no EC");
             	 if(this.verificarValidadeMochila(novaSolucao) == true) {
-            		 ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUÇÃO FOI ENCONTRADA!" + this.verificarMochila(novaSolucao));
-            		 System.out.println("UMA NOVA SOLUÇÃO OTIMA FOI ENCONTRADA: " + this.verificarMochila(novaSolucao));
-            		 System.out.println("VALOR: " + this.verificarMochila(novaSolucao));
+            		 ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUÇÃO FOI ENCONTRADA! " + this.verificarValorMochila(novaSolucao));
+            		 System.out.println("UMA NOVA SOLUÇÃO OTIMA FOI ENCONTRADA: " + this.verificarValorMochila(novaSolucao));
+            		 System.out.println("VALOR: " + this.verificarValorMochila(novaSolucao));
             		 System.out.println("PESO: " + this.verificarPesoMochila(novaSolucao));
             		 
             		 melhorSolucao = novaSolucao;
@@ -332,7 +328,7 @@ public class MetodosILS {
                 
             }
             else {
-            	ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUCAO NAO FOI ENCONTRADA" + this.verificarMochila(melhorSolucao));
+            	ArquivoUtils.adicionarTextoAoArquivo("MELHOR SOLUCAO NAO FOI ENCONTRADA " + this.verificarValorMochila(melhorSolucao));
             }
         }
 
@@ -354,12 +350,12 @@ public class MetodosILS {
         }
         
         System.out.println();
-        System.out.println("Numero de Itens: " + this.verificarNumeroDeItens(solucao));
+        System.out.println("Numero de Itens Na Mochila: " + this.verificarNumeroDeItens(solucao));
         System.out.println("Peso: " + pesoTotal);
         System.out.println("Valor: " + valorTotal);
         System.out.println("Criterio de parada da pertubação: " + criterioDeParadaDoILS);
         System.out.println("Criterio de parada da busca local: " + criterioDeParadaDaBuscaLocal);
-        System.out.println("Tamanho da pertubação: " + tamanhoPertubação);
-        System.out.println("Numero de Items: " + solucao.length);
+        System.out.println("Tamanho da pertubação: " + tamanhoPertubação + "%");
+        System.out.println("Numero de Items Totais: " + solucao.length );
     }
 }

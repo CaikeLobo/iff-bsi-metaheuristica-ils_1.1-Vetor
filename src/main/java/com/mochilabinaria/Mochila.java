@@ -44,8 +44,9 @@ public class Mochila {
     	int cont = 0;
     	while (scanner.hasNext()) {
     		scanner.nextLine();
-    		int peso = scanner.nextInt();
     		int valor = scanner.nextInt();
+    		int peso = scanner.nextInt();
+    		
     		
     		Item item = new Item("Item "+cont,peso,valor);
     		
