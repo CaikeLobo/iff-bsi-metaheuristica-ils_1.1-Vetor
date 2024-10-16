@@ -4,6 +4,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+//Caike,Ivanilso,Matheus,Pedro 
+
 public class Mochila {
     private Item[] itens = new Item[0];
     private int capacidade;
