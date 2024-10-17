@@ -147,6 +147,7 @@ public class MetodosILS {
         int numeroDeErros = 0;
         int NumeroDeVezes = 0;
         boolean ocorreuErro = true;
+        boolean Achou = false;
         if (verificarValidadeMochila(melhorSolucao) == true) {
         	melhorValor = verificarValorMochila(melhorSolucao);             
         }
@@ -158,12 +159,11 @@ public class MetodosILS {
             int[] novaSolucao = Arrays.copyOf(melhorSolucao, melhorSolucao.length);
             
             
-            int Decisao = random.nextInt(2) + 1;
+            int Decisao = random.nextInt(3) + 1;
             
 			switch (Decisao) {
             case 1: // Adicionar 1 Item
 
-                boolean Achou = false;
             	while (Achou == false) {
             		int indice = random.nextInt(novaSolucao.length);
             		if (solucao[indice] == 0) {
@@ -171,31 +171,57 @@ public class MetodosILS {
             			Achou = true;
             		}                            		
             	}
-            	
+            	Achou = false;
                 break;
             case 2: // Adicionar 1 e Retirar 1 item
 
-            	boolean Achou2 = false;
-            	while (Achou2 == false) {
+
+            	while (Achou == false) {
             		//System.out.println("Case 2 1");
             		int indice = random.nextInt(novaSolucao.length);
             		if (solucao[indice] == 0) {
             			novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0 
-            			Achou2 = true;
+            			Achou = true;
             		}                            		
             	}
-            	Achou2 = false;
-            	while (Achou2 == false) {
+            	Achou = false;
+            	while (Achou == false) {
             		//System.out.println("Case 2 2");
             		int indice2 = random.nextInt(novaSolucao.length);
             		//System.out.println("INDICE = " + solucao[indice2] );
             		if (solucao[indice2] == 1) {
             			//System.out.println("Case 2 3");
             			novaSolucao[indice2] = 1 - novaSolucao[indice2]; // Alterna o valor de 0 para 1 ou de 1 para 0 
-            			Achou2 = true;
+            			Achou = true;
             		}                            		
             	}
-                break;            
+            	Achou = false;
+                break;
+            case 3: // Adicionar 2 e Retirar 1 item
+            	for (int i = 0; i < 2; i++) {
+            		Achou= false;
+            		while (Achou == false) {
+            		//System.out.println("Case 2 1");
+            			int indice = random.nextInt(novaSolucao.length);
+            			if (solucao[indice] == 0) {
+            				novaSolucao[indice] = 1 - novaSolucao[indice]; // Alterna o valor de 0 para 1 ou de 1 para 0 
+            				Achou = true;
+            			}                            		
+            		}
+            	}
+            	Achou = false;
+            	while (Achou == false) {
+            		//System.out.println("Case 2 2");
+            		int indice2 = random.nextInt(novaSolucao.length);
+            		//System.out.println("INDICE = " + solucao[indice2] );
+            		if (solucao[indice2] == 1) {
+            			//System.out.println("Case 2 3");
+            			novaSolucao[indice2] = 1 - novaSolucao[indice2]; // Alterna o valor de 0 para 1 ou de 1 para 0 
+            			Achou = true;
+            		}                            		
+            	}
+            	Achou = false;
+                break; 
             default:
                 System.out.println("Opção inválida!");
                   }

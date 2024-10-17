@@ -20,8 +20,8 @@ public class Main {
       
     	// Parâmetros do ILS
     	int criterioDeParadaDoILS = 1000;
-    	int criterioDeParadaDaBuscaLocal = 1000;
-    	int tamanhoPertubação = 20; // 20 = 20% da Solução foi retirada
+    	int criterioDeParadaDaBuscaLocal = 100000;
+    	int tamanhoPertubação = 10; // 20 = 20% da Solução foi retirada
 
     	// Iniciação da mochila com os itensMochila
     	Mochila mochila = new Mochila(arquivo);
