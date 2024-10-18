@@ -16,6 +16,8 @@ public class ArquivoUtils {
 	            e.printStackTrace(); 
 	        }
 	    }
+	 
+	 
 	 // Método para apagar todo o conteúdo do arquivo
 	    public static void apagarArquivo() {
 	        // Especifica o caminho do arquivo

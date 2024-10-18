@@ -30,7 +30,7 @@ public class MetodosILS {
      
     
 	// Função de avaliação da mochila
-    private int verificarValorMochila(int[] solucao) {
+    public int verificarValorMochila(int[] solucao) {
         int valorTotal = 0;
         
         for (int i = 0; i < solucao.length; i++) {
